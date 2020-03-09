@@ -2,6 +2,7 @@ package com.tdd.uchit.moviehunt.data.repository
 
 import android.annotation.SuppressLint
 import com.tdd.uchit.moviehunt.data.db.MovieDao
+import com.tdd.uchit.moviehunt.data.model.Data
 import com.tdd.uchit.moviehunt.data.model.MovieResponse
 import com.tdd.uchit.moviehunt.data.remote.MovieService
 import io.reactivex.Maybe
@@ -15,6 +16,15 @@ class MovieRepositoryImpl(private val movieDao: MovieDao, private val movieServi
 
     override fun fetchMovies(): Maybe<MovieResponse> {
         return Maybe.concatArray(fetchMoviesFromDb(), fetchMoviesFromApi()).firstElement()
+    }
+
+    override fun fetchMoviesBYID(id: Int): Maybe<Data> {
+        return movieService.fetchMoviesBYID(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess {
+                Timber.d("Dispatching $it movies from API BY ID")
+            }
     }
 
     private fun fetchMoviesFromApi(): Maybe<MovieResponse> {

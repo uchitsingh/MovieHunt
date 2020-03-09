@@ -10,17 +10,19 @@ import com.squareup.moshi.JsonClass
 data class Data(
     @ColumnInfo(name = "genre")
     @Json(name = "genre")
-    val genre: String,
+    val genre: String?,
     @ColumnInfo(name = "id")
     @Json(name = "id")
-    val id: Int,
+    val id: Int?,
     @ColumnInfo(name = "poster")
     @Json(name = "poster")
-    val poster: String,
+    val poster: String?,
     @ColumnInfo(name = "title")
     @Json(name = "title")
-    val title: String,
+    val title: String?,
     @ColumnInfo(name = "year")
     @Json(name = "year")
-    val year: String
+    val year: String?,
+    @Json(name = "plot")
+    val plot: String?
 )

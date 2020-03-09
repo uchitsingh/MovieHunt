@@ -5,5 +5,6 @@ class Constant {
         const val MOVIE_DATABASE = "movie-database"
         const val BASE_URL = "https://movies-sample.herokuapp.com/"
         const val MOVIE_URL = "api/movies"
+        const val MOVIE_URL_BY_ID = "api/movies/{id}"
     }
 }

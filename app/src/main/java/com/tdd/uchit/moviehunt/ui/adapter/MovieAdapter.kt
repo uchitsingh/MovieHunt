@@ -9,7 +9,8 @@ import com.tdd.uchit.moviehunt.data.model.Data
 import com.tdd.uchit.moviehunt.data.model.MovieResponse
 import com.tdd.uchit.moviehunt.ui.adapter.viewholder.MovieViewHolder
 
-class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
+class MovieAdapter(private val itemClickListener: OnItemClickListener) :
+    RecyclerView.Adapter<MovieViewHolder>() {
     private val movies = mutableListOf<Data>()
     private val moviesCopy = mutableListOf<Data>()
 
@@ -27,6 +28,12 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.bindItem(movies[position])
+        holder.itemView.setOnClickListener {
+            val id = movies[position].id
+            if (id != null) {
+                itemClickListener.onMovieClicked(id)
+            }
+        }
     }
 
     fun setData(movieResponse: MovieResponse) {
@@ -46,11 +53,16 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
         } else {
             searchWord = searchWord.toLowerCase()
             for (movie in moviesCopy) {
-                if (movie.genre.toLowerCase().contains(searchWord) || movie.title.toLowerCase().contains(searchWord)) {
+                if (movie.genre!!.toLowerCase().contains(searchWord) || movie.title!!.toLowerCase().contains(searchWord)) {
                     movies.add(movie)
                 }
             }
         }
         notifyDataSetChanged()
     }
+
+    interface OnItemClickListener {
+        fun onMovieClicked(id: Int)
+    }
+
 }

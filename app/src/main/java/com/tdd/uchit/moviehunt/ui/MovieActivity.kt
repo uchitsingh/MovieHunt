@@ -1,5 +1,6 @@
 package com.tdd.uchit.moviehunt.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,9 @@ import kotlinx.android.synthetic.main.activity_movie.*
 import javax.inject.Inject
 
 class MovieActivity : AppCompatActivity() {
+    companion object {
+        val MOVIE_ID = "movie_id"
+    }
 
     @Inject
     lateinit var movieRepository: MovieRepository
@@ -36,7 +40,15 @@ class MovieActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         movie_rv.layoutManager = GridLayoutManager(this, 3)
-        adapter = MovieAdapter()
+        adapter = MovieAdapter(object : MovieAdapter.OnItemClickListener {
+            override fun onMovieClicked(id: Int) {
+                val intent = Intent(this@MovieActivity, MovieDetailActivity::class.java)
+                val bundle = Bundle()
+                bundle.putInt(MOVIE_ID, id)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+        })
         movie_rv.adapter = adapter
     }
 
@@ -66,4 +78,5 @@ class MovieActivity : AppCompatActivity() {
             }
         })
     }
+
 }

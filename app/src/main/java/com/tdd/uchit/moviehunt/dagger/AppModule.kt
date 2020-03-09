@@ -31,7 +31,6 @@ open class AppModule(private var app: App) {
         movieService: MovieService
     ): MovieRepository {
         return MovieRepositoryImpl(movieDao, movieService)
-        return MovieRepositoryImpl(movieDao, movieService)
     }
 
     @Provides
