@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class MovieActivity : AppCompatActivity() {
     companion object {
-        val MOVIE_ID = "movie_id"
+        const val MOVIE_ID = "movie_id"
     }
 
     @Inject
@@ -63,17 +63,21 @@ class MovieActivity : AppCompatActivity() {
         viewModel.moviesObservable.observe(this, Observer {
             adapter.setData(it)
         })
+
+        viewModel.searchObservable.observe(this, Observer {
+            adapter.setData(it)
+        })
     }
 
     private fun setSearchView() {
         movie_searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                adapter.filter(query)
+                viewModel.search(query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                adapter.filter(newText)
+                 viewModel.search(newText)
                 return true
             }
         })

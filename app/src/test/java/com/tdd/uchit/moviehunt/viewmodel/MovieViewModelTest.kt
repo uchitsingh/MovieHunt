@@ -34,11 +34,16 @@ class MovieViewModelTest {
     private lateinit var movieeViewModel: MovieViewModel
 
     private val datas = listOf(
-        Data("genre", 1, "pster", "title", "year"),
-        Data("genre1", 1, "pster1", "title1", "year1"),
-        Data("genre2", 2, "pster2", "title2", "year2")
+        Data("genre", 1, "pster", "title", "year"," plot"),
+        Data("genre1", 1, "pster1", "title1", "year1", "plot1"),
+        Data("genre2", 2, "pster2", "title2", "year2", "plor2")
+    )
+
+    private val datas1 = listOf(
+        Data("genre1", 1, "pster1", "title1", "year1", "plot1")
     )
     private val movieResponse = MovieResponse(datas)
+    private val movieResponse1 = MovieResponse(datas1)
 
     @Before
     fun setup() {
@@ -52,14 +57,32 @@ class MovieViewModelTest {
     }
 
     @Test
-    fun fetchMovies_success() {
+    fun fetchMovies_successTest() {
         //given
-        every { movieRepository.fetchMovies() }.returns(Maybe.just(movieResponse))
+        every { movieRepository.fetchMovies() } returns(Maybe.just(movieResponse))
 
         //when
         movieeViewModel.fetchMovies()
 
         //then
         Assert.assertEquals(movieResponse, movieeViewModel.moviesObservable.value)
+    }
+
+    @Test
+    fun fetchMovies_search_genreTest() {
+        val genreSearch = "genre1    "
+
+        //given
+        every { movieRepository.fetchMovies() } returns(Maybe.just(movieResponse))
+
+        //when
+        movieeViewModel.fetchMovies()
+
+        //then
+        Assert.assertEquals(movieResponse, movieeViewModel.moviesObservable.value)
+
+        movieeViewModel.search(genreSearch)
+
+        Assert.assertEquals(movieResponse1, movieeViewModel.searchObservable.value)
     }
 }

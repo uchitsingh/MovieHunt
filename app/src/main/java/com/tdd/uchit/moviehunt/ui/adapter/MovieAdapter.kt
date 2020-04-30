@@ -1,6 +1,5 @@
 package com.tdd.uchit.moviehunt.ui.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +11,6 @@ import com.tdd.uchit.moviehunt.ui.adapter.viewholder.MovieViewHolder
 class MovieAdapter(private val itemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<MovieViewHolder>() {
     private val movies = mutableListOf<Data>()
-    private val moviesCopy = mutableListOf<Data>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder(
@@ -39,25 +37,6 @@ class MovieAdapter(private val itemClickListener: OnItemClickListener) :
     fun setData(movieResponse: MovieResponse) {
         movies.clear()
         movies.addAll(movieResponse.data)
-        moviesCopy.clear()
-        moviesCopy.addAll(movies)
-        notifyDataSetChanged()
-    }
-
-    @SuppressLint("DefaultLocale")
-    fun filter(text: String) {
-        var searchWord = text
-        movies.clear()
-        if (searchWord.isEmpty()) {
-            movies.addAll(moviesCopy)
-        } else {
-            searchWord = searchWord.toLowerCase()
-            for (movie in moviesCopy) {
-                if (movie.genre!!.toLowerCase().contains(searchWord) || movie.title!!.toLowerCase().contains(searchWord)) {
-                    movies.add(movie)
-                }
-            }
-        }
         notifyDataSetChanged()
     }
 

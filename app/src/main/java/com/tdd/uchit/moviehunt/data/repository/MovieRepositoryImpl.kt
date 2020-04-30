@@ -10,8 +10,9 @@ import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import javax.inject.Inject
 
-class MovieRepositoryImpl(private val movieDao: MovieDao, private val movieService: MovieService) :
+class MovieRepositoryImpl @Inject constructor(private val movieDao: MovieDao, private val movieService: MovieService) :
     MovieRepository {
 
     override fun fetchMovies(): Maybe<MovieResponse> {
